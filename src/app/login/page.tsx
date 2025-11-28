@@ -17,13 +17,18 @@ export default function LoginPage() {
     setError(null);
     try {
       const res = await fetch('http://localhost:5000/api/auth/login', {
+      //  const res = await fetch('http://10.0.2.2:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
       if (res.ok) {
+        const user = data.user;
+        console.log(user.id + " " + user.name + " " + user.username);
+        document.cookie = `username=${encodeURIComponent(user.username)}; path=/; max-age=${60 * 60}`;
         const from = searchParams.get('from') || '/welcome';
+        console.log(from);
         router.push(from);
       } else {
         setError(data.message ?? '登录失败');

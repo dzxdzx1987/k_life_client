@@ -6,8 +6,10 @@ export function middleware(req: NextRequest) {
 
   // 保护欢迎页
   if (pathname.startsWith('/welcome')) {
-    const token = req.cookies.get('auth_token')?.value;
-    if (!token) {
+    //const token = req.cookies.get('auth_token')?.value;
+    //if (!token) {
+    const username = req.cookies.get('username')?.value;
+    if (!username) {
       const loginUrl = new URL('/login', req.url);
       loginUrl.searchParams.set('from', pathname);
       return NextResponse.redirect(loginUrl);
